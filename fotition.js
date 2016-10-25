@@ -190,10 +190,26 @@ var handleAddPhoto = function(e) {
             var campaignOverlayImgDiv = document.getElementById('campaignOverlayImgDiv');
             campaignOverlayImgDiv.style.backgroundImage = "url(" + e.target.result + ")";
             campaignOverlayImgDiv.style.backgroundSize = "cover";
+
+            campaignOverlayImgDiv.setAttribute("image_added", "true");
+            var addPhotoBtn = document.getElementById('addPhotoBtn');
+            addPhotoBtn.innerHTML = "NEXT";
+
             console.log("set set set !!!");
         }
         reader.readAsDataURL(photoInput.files[0]);
         console.log("Adding " + photoInput.files[0]);
+    }
+};
+
+var handlePhotoButtonClick = function (e) {
+    var campaignOverlayImgDiv = document.getElementById('campaignOverlayImgDiv');
+    var imageAdded = campaignOverlayImgDiv.getAttribute("image_added");
+    if (imageAdded == "true") {
+        alert("Show Next Screen");
+    }
+    else {
+        openFileDialog(e);
     }
 };
 
@@ -221,8 +237,8 @@ function renderCampain(campaignJSONText) {
     var photoInput = createElement("input", {"id":"photoInput", "class":"hidden", "type":"file"}, null, campaignDiv);
     photoInput.onchange = handleAddPhoto;
 
-    var photoBtn = createElement("button", {"class":"btn--fote center"}, "ADD A PHOTO", campaignDiv);
-    photoBtn.onclick = openFileDialog;
+    var photoBtn = createElement("button", {"id":"addPhotoBtn", "class":"btn--fote center"}, "ADD A PHOTO", campaignDiv);
+    photoBtn.onclick = handlePhotoButtonClick;
     
 
     return campaignDiv;
